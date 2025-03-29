@@ -4,6 +4,21 @@ import publicRoutes from './routes/public.js';
 const app = express()
 app.use(express.json())
 
-app.use('/', publicRoutes)
+const users = []
 
-app.listen(3000, () => console.log("Servidor está funcionando"))
+app.post('/usuarios', (req, res) => {
+
+    console.log(req.body);  // Debugging
+    
+    users.push(req.body);
+    res.send('Okay Good Aqui Tambem Funciona');
+});
+
+app.get('/usuarios',(req, res) => {
+
+  res.json(users)
+
+    
+})
+
+app.listen(3000)
