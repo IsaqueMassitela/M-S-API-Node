@@ -1,24 +1,34 @@
 import express from 'express';
 import publicRoutes from './routes/public.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-const app = express()
-app.use(express.json())
+dotenv.config();
 
-const users = []
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+const dbUrl = process.env.DATABASE_URL;
+
+mongoose.connect(dbUrl)
+  .then(() => console.log("🟢 Conectado ao MongoDB!"))
+  .catch((err) => console.error("🔴 Erro ao conectar ao MongoDB:", err));
+
+const users = [];
 
 app.post('/usuarios', (req, res) => {
-
-    console.log(req.body);  // Debugging
-    
+    console.log(req.body);
     users.push(req.body);
-    res.send('Okay Good Aqui Tambem Funciona');
+    res.status(201).json(req.body);
 });
 
-app.get('/usuarios',(req, res) => {
+app.get('/usuarios', (req, res) => {
+    res.status(200).json(users);
+});
 
-  res.json(users)
-
-    
-})
-
-app.listen(3000)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+});
