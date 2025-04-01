@@ -1,11 +1,21 @@
 import express from 'express';
 
-const router = express.Router()
+const router = express.Router();
+const users = []; 
 
 router.post('/cadastro', (req, res) => {
-    const user = req.body
+    const user = req.body;
 
-    res.status(201).json(user)
-})
+    if (!user || !user.email || !user.password) {
+        return res.status(400).json({ error: 'Email e senha são obrigatórios' });
+    }
 
-export default router
+    users.push(user); 
+    res.status(201).json({ message: 'Usuário cadastrado com sucesso', user });
+});
+
+router.get('/cadastro', (req, res) => {
+    res.send('O GET está funcionando corretamente!');
+});
+
+export default router;
