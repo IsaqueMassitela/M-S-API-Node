@@ -9,19 +9,18 @@ router.post('/cadastro', async (req, res) => {
     const { email, password, nome } = req.body;
 
     try {
-        // Verificando se o usuário já existe
+      
         const userExistente = await User.findOne({ email });
         if (userExistente) {
             return res.status(400).json({ error: 'Email já cadastrado' });
         }
 
-        // Hash da senha para segurança
-        const hashedPassword = await bcrypt.hash(password, 10);  // Salt de 10 é uma boa prática
+        const hashedPassword = await bcrypt.hash(password, 10); 
 
-        // Criando o novo usuário
+       
         const novoUsuario = new User({
             email,
-            password: hashedPassword,  // Salvando a senha criptografada
+            password: hashedPassword, 
             nome,
         });
 
